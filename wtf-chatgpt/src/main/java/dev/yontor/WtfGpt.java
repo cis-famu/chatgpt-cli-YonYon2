@@ -21,7 +21,7 @@ public class WtfGpt {
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        ChatGptRequest chatGptRequest = new ChatGptRequest("text-davinci-001", prompt, 1,100);
+        ChatGptRequest chatGptRequest = new ChatGptRequest("text-davinci-001", prompt, 1,100,2);
         String input = objectMapper.writeValueAsString(chatGptRequest);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -35,9 +35,9 @@ public class WtfGpt {
 
         if (response.statusCode() == 200) {
             ChatGptResponse chatGptResponse = objectMapper.readValue(response.body(),ChatGptResponse.class);
-            //Here I tried to get it to send more than one response but this may not be the way to do it
-            String answer1 = chatGptResponse.choices()[chatGptResponse.choices().length-1].text();
-            String answer2 = (chatGptResponse.choices().length-2>=0)?chatGptResponse.choices()[chatGptResponse.choices().length-2].text():"";
+            //TWO RESPONSES
+            String answer1 = chatGptResponse.choices()[0].text();
+            String answer2 = chatGptResponse.choices()[1].text();
             System.out.println("answer 1: ");
             if (!answer1.isEmpty()){
                 System.out.println(answer1.replace("\n","").trim());
